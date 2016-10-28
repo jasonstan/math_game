@@ -8,21 +8,27 @@ import time
 import numpy
 
 
-def get_operator(div=True):
-    """Get mathematical operator."""
+def get_random_operators(div, factors):
+    """
+    Get mathematical operator. Parameter 'div' allows user to exclude
+    division operator.
+    """
 
-    ops = {'+': operator.add,
-           '-': operator.sub,
-           '*': operator.mul,
-           '/': operator.truediv}
+    operators = {'+': operator.add,
+                 '-': operator.sub,
+                 '*': operator.mul,
+                 '/': operator.truediv}
 
     # if div preference is false, exclude division
     if div == False:
-        ops.pop('/')
+        operators.pop('/')
 
-    op = random.choice(list(ops.keys()))
-    print op
-    print ops.get(op)
+    ops = []
+    for i in range(factors-1):
+        op_key = random.choice(list(operators.keys()))  # must be easier way to randomly same key value pair(s) from dict... randomly sample factors - 1 with replacement
+        op_value = operators.get(op_key)
+        ops.append({op_key: op_value})
+    return ops
 
 
 def get_random_numbers(N, low, high):
@@ -30,45 +36,42 @@ def get_random_numbers(N, low, high):
     return numpy.random.randint(low, high, size=N)
 
 
-def random_equation(div):
+def get_random_equation(div, factors, low, high):
     """
     Generate a random equation with two random numbers and a randomly
     selected math operator.
     """
 
-    ops = {'+': operator.add,
-       '-': operator.sub,
-       '*': operator.mul,
-       '/': operator.truediv}
-
-    # if div preference is false, exclude division
     if div == False:
         ops.pop('/')
 
-    num1 = random.randint(0,13)
-    num2 = random.randint(1,12)   # exclude 0 to prevent division by zero
-    num3 = random.randint(0,49)
-    op = random.choice(list(ops.keys()))
-    answer = ops.get(op)(num1,num2)
-    print('What is {} {} {}?'.format(num1, op, num2))
+    nums = get_random_numbers(factors, low, high)
+    ops = get_operator(div)
+
+    answer = op_math(nums[0], nums[1])
+    print('What is {} {} {}?'.format(nums[0], op_str, nums[1]))
     return answer
 
 
-def evaluate_response(div):
-    """Get correct answer and user response, evaluate equivalence."""
+def evaluate_response(div, factors, low, high):
+    """
+    Get correct answer and user response, evaluate equivalence.
+    """
 
-    answer = random_equation(div)
+    answer = random_equation(div, factors, low, high)
     guess = float(input())
     return guess == answer
 
 
-def quiz(N, div=True):
-    """Loop through N questions, log number of correct responses."""
+def quiz(N=10, div=True, factors=2, low=1, high=15):
+    """
+    Loop through N questions, store number of correct responses.
+    """
 
     print('Welcome. This is a {} question math quiz\n'.format(N))
     score = 0
     for i in range(N):
-        correct = evaluate_response(div)
+        correct = evaluate_response(div, factors, low, high)
         if correct:
             score += 1
             print('Correct!\n')
