@@ -10,8 +10,9 @@ import numpy
 
 def get_random_operators(div, factors):
     """
-    Get mathematical operator. Parameter 'div' allows user to exclude
-    division operator.
+    Get mathematical operators. Retrieve one less than the number of 
+    factors that user has requested for equations. Parameter 'div' 
+    allows user to exclude division operator.
     """
 
     operators = {'+': operator.add,
@@ -38,27 +39,24 @@ def get_random_numbers(N, low, high):
 
 def get_random_equation(div, factors, low, high):
     """
-    Generate a random equation with two random numbers and a randomly
-    selected math operator.
+    Generate a random equation with N random numbers and N-1 randomly
+    selected math operators.
     """
 
-    if div == False:
-        ops.pop('/')
-
     nums = get_random_numbers(factors, low, high)
-    ops = get_operator(div)
+    ops = get_random_operators(div, factors)
 
-    answer = op_math(nums[0], nums[1])
-    print('What is {} {} {}?'.format(nums[0], op_str, nums[1]))
+    answer = ops[0].values()[0](nums[0], nums[1])
+    print('What is {} {} {}?'.format(nums[0], ops[0].keys()[0], nums[1]))
     return answer
-
+    
 
 def evaluate_response(div, factors, low, high):
     """
     Get correct answer and user response, evaluate equivalence.
     """
 
-    answer = random_equation(div, factors, low, high)
+    answer = get_random_equation(div, factors, low, high)
     guess = float(input())
     return guess == answer
 
