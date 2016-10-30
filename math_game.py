@@ -26,7 +26,7 @@ def get_random_operators(div, factors):
 
     ops = []
     for i in range(factors-1):
-        op_key = random.choice(list(operators.keys()))  # must be easier way to randomly same key value pair(s) from dict... randomly sample factors - 1 with replacement
+        op_key = random.choice(list(operators.keys()))
         op_value = operators.get(op_key)
         ops.append({op_key: op_value})
     return ops
@@ -46,13 +46,14 @@ def get_random_equation(div, factors, low, high):
     nums = get_random_numbers(factors, low, high)
     ops = get_random_operators(div, factors)
 
-    # print ops[0].values()[0](nums[0], nums[1])
-    # print ops[0].values()
-    # print ops[0].values()[0]
-    # #answer = ops[0].values()[0](nums[0], nums[1])
-    answer = ops[1].values()[0](ops[0].values()[0](nums[0], nums[1]), nums[2])
-    #print('What is {} {} {}?'.format(nums[0], ops[0].keys()[0], nums[1]))
-    print('What is {} {} {} {} {}?'.format(nums[0], ops[0].keys()[0], nums[1], ops[1].keys()[0], nums[2]))
+    answer = nums[0]
+    ques = 'What is {}'.format(nums[0])
+    for i in range(factors-1):
+        answer = ops[i].values()[0](answer, nums[i])
+        ques = ques + ' ' + ops[i].keys()[0] + ' ' + str(nums[i])
+    ques = ques + '?'
+    
+    print ques
     return answer
     
 
