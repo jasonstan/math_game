@@ -46,19 +46,26 @@ def get_random_equation(div, factors, low, high):
     nums = get_random_numbers(factors, low, high)
     ops = get_random_operators(div, factors)
 
-    answer = ops[0].values()[0](nums[0], nums[1])
-    print('What is {} {} {}?'.format(nums[0], ops[0].keys()[0], nums[1]))
+    # print ops[0].values()[0](nums[0], nums[1])
+    # print ops[0].values()
+    # print ops[0].values()[0]
+    # #answer = ops[0].values()[0](nums[0], nums[1])
+    answer = ops[1].values()[0](ops[0].values()[0](nums[0], nums[1]), nums[2])
+    #print('What is {} {} {}?'.format(nums[0], ops[0].keys()[0], nums[1]))
+    print('What is {} {} {} {} {}?'.format(nums[0], ops[0].keys()[0], nums[1], ops[1].keys()[0], nums[2]))
     return answer
     
 
 def evaluate_response(div, factors, low, high):
     """
-    Get correct answer and user response, evaluate equivalence.
+    Get correct answer and user response, evaluate equivalence, return
+    True if correct, False otherwise, and return correct answer.
     """
 
     answer = get_random_equation(div, factors, low, high)
     guess = float(input())
-    return guess == answer
+    return {'correct': guess == answer,
+            'answer': answer}
 
 
 def quiz(N=10, div=True, factors=2, low=1, high=15):
@@ -69,11 +76,12 @@ def quiz(N=10, div=True, factors=2, low=1, high=15):
     print('Welcome. This is a {} question math quiz\n'.format(N))
     score = 0
     for i in range(N):
-        correct = evaluate_response(div, factors, low, high)
+        eval = evaluate_response(div, factors, low, high)
+        correct = eval['correct']
         if correct:
             score += 1
             print('Correct!\n')
         else:
-            print('Incorrect!\n')
+            print('Incorrect! The correct answer is {}.\n'.format(eval['answer']))
         time.sleep(2)
     print('Your score was {}/{}'.format(score, N))
