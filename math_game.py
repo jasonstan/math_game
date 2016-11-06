@@ -41,6 +41,8 @@ def get_random_equation(div, factors, low, high):
     """
     Generate a random equation with N random numbers and N-1 randomly
     selected math operators.
+
+    ERROR: equation not evaluating order of operations correctly
     """
 
     nums = get_random_numbers(factors, low, high)
@@ -48,10 +50,9 @@ def get_random_equation(div, factors, low, high):
 
     answer = nums[0]
     ques = 'What is {}'.format(nums[0])
-    i = 1
-    for i in range(factors-1):
-        answer = ops[i].values()[0](answer, nums[i])
-        ques = ques + ' ' + ops[i].keys()[0] + ' ' + str(nums[i])
+    for i in range(1, factors):
+        answer = ops[i-1].values()[0](answer, nums[i])
+        ques = ques + ' ' + ops[i-1].keys()[0] + ' ' + str(nums[i])
     ques = ques + '?'
     
     print ques
