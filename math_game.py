@@ -48,6 +48,7 @@ def get_random_equation(div, factors, low, high):
 
     answer = nums[0]
     ques = 'What is {}'.format(nums[0])
+    i = 1
     for i in range(factors-1):
         answer = ops[i].values()[0](answer, nums[i])
         ques = ques + ' ' + ops[i].keys()[0] + ' ' + str(nums[i])
