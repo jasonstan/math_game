@@ -1,1 +1,1 @@
-Creates a basic math quiz game to practice arithmetic.
+Game to test user's arithmetic abilities. Allows user to determine number of questions in quiz, whether or not division is included in quiz, the number of factors included in each question of quiz, and both the low and high of the ranges from which random numbers are chosen when assembling each new equation.
