@@ -1,5 +1,12 @@
-# Huge help from this SO discussion:
-# http://stackoverflow.com/questions/26260950/how-can-i-randomly-choose-a-maths-operator-and-ask-recurring-maths-questions-wit
+"""
+Game to test user's arithmetic abilities. Allows user to determine 
+number of questions in quiz, whether or not division is included in
+quiz, the number of factors included in each question of quiz, and both
+the low and high of the ranges from which random numbers are chosen
+when assembling each new equation.
+
+Author: Jason Stanley
+"""
 
 
 import random
@@ -42,7 +49,7 @@ def get_random_equation(div, factors, low, high):
     Generate a random equation with N random numbers and N-1 randomly
     selected math operators.
 
-    ERROR: equation not evaluating order of operations correctly
+    BUG: not yet evaluating order of operations correctly
     """
 
     nums = get_random_numbers(factors, low, high)
