@@ -15,7 +15,7 @@ import time
 import numpy
 
 
-def get_random_operators(div, factors):
+def get_random_operators(ops_exclude, factors):
     """
     Get mathematical operators. Retrieve one less than the number of 
     factors that user has requested for equations. Parameter 'div' 
@@ -27,9 +27,8 @@ def get_random_operators(div, factors):
                  '*': operator.mul,
                  '/': operator.truediv}
 
-    # if div preference is false, exclude division
-    if div == False:
-        operators.pop('/')
+    for o in ops_exclude:
+        operators.pop(o)
 
     ops = []
     for i in range(factors-1):
@@ -44,7 +43,7 @@ def get_random_numbers(N, low, high):
     return numpy.random.randint(low, high, size=N)
 
 
-def get_random_equation(div, factors, low, high):
+def get_random_equation(ops_exclude, factors, low, high):
     """
     Generate a random equation with N random numbers and N-1 randomly
     selected math operators.
@@ -53,7 +52,7 @@ def get_random_equation(div, factors, low, high):
     """
 
     nums = get_random_numbers(factors, low, high)
-    ops = get_random_operators(div, factors)
+    ops = get_random_operators(ops_exclude, factors)
 
     answer = nums[0]
     ques = 'What is {}'.format(nums[0])
@@ -66,32 +65,34 @@ def get_random_equation(div, factors, low, high):
     return answer
     
 
-def evaluate_response(div, factors, low, high):
+def evaluate_response(ops_exclude, factors, low, high):
     """
     Get correct answer and user response, evaluate equivalence, return
     True if correct, False otherwise, and return correct answer.
     """
 
-    answer = get_random_equation(div, factors, low, high)
+    answer = get_random_equation(ops_exclude, factors, low, high)
     guess = float(input())
     return {'correct': guess == answer,
             'answer': answer}
 
 
-def quiz(N=10, div=True, factors=2, low=1, high=15):
+def quiz(N=10, ops_exclude=None, factors=2, low=1, high=15):
     """
     Loop through N questions, store number of correct responses.
     """
 
-    print('Welcome. This is a {} question math quiz\n'.format(N))
+    print("Welcome. This is a {} question math quiz. Operators excluded: {}\n"
+        .format(N, ops_exclude))
     score = 0
     for i in range(N):
-        eval = evaluate_response(div, factors, low, high)
+        print('Question #{} of {}:'.format(i+1, N))
+        eval = evaluate_response(ops_exclude, factors, low, high)
         correct = eval['correct']
         if correct:
             score += 1
             print('Correct!\n')
         else:
             print('Incorrect! The correct answer is {}.\n'.format(eval['answer']))
-        time.sleep(2)
+        time.sleep(1)
     print('Your score was {}/{}'.format(score, N))
